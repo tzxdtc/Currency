@@ -19,14 +19,25 @@ class ViewController: UIViewController {
         currencyCollectionView.delegate = self
         currencyCollectionView.dataSource = self
         currencyCollectionView.register(UINib(nibName: "CurrencyCell", bundle: nil), forCellWithReuseIdentifier: "CurrencyCell")
-//        EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
-//
-//            DispatchQueue.main.async() {
-//            }
-//        }
+        EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
+
+            let encoder = JSONEncoder()
+            let defaults = UserDefaults.standard
+            if let encoded = try? encoder.encode(results) {
+                defaults.set(encoded, forKey: "SavedPerson")
+            }
+            
+            if let savedPerson = defaults.object(forKey: "SavedPerson") as? Data {
+                let decoder = JSONDecoder()
+                if let loadedPerson = try? decoder.decode(CurrencyInfo.self, from: savedPerson) {
+                    print(loadedPerson.quotes.USDAED)
+                }
+            }
+        }
         
         // call every 30 mins
         timer = Timer.scheduledTimer(timeInterval: 1800, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
