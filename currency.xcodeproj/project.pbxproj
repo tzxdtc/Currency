@@ -18,6 +18,8 @@
 		D47FE3BD24FA266500BF4B91 /* CurrencyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47FE3BC24FA266500BF4B91 /* CurrencyUITests.swift */; };
 		D4B415D824FA4F1D00086684 /* CurrencyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B415D624FA4F1D00086684 /* CurrencyCell.swift */; };
 		D4B415D924FA4F1D00086684 /* CurrencyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4B415D724FA4F1D00086684 /* CurrencyCell.xib */; };
+		D4B415DC24FA553C00086684 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B415DB24FA553C00086684 /* HTTPClient.swift */; };
+		D4B415E124FA5AF600086684 /* CurrencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B415E024FA5AF600086684 /* CurrencyModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +59,8 @@
 		D47FE3BE24FA266500BF4B91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4B415D624FA4F1D00086684 /* CurrencyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCell.swift; sourceTree = "<group>"; };
 		D4B415D724FA4F1D00086684 /* CurrencyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyCell.xib; sourceTree = "<group>"; };
+		D4B415DB24FA553C00086684 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		D4B415E024FA5AF600086684 /* CurrencyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +123,8 @@
 		D47FE39924FA266300BF4B91 /* Currency */ = {
 			isa = PBXGroup;
 			children = (
+				D4B415DF24FA58F000086684 /* Model */,
+				D4B415DA24FA552F00086684 /* HttpClient */,
 				D47FE3CA24FA3DDF00BF4B91 /* View */,
 				D47FE39A24FA266300BF4B91 /* AppDelegate.swift */,
 				D47FE39C24FA266300BF4B91 /* SceneDelegate.swift */,
@@ -156,6 +162,22 @@
 				D4B415D724FA4F1D00086684 /* CurrencyCell.xib */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		D4B415DA24FA552F00086684 /* HttpClient */ = {
+			isa = PBXGroup;
+			children = (
+				D4B415DB24FA553C00086684 /* HTTPClient.swift */,
+			);
+			path = HttpClient;
+			sourceTree = "<group>";
+		};
+		D4B415DF24FA58F000086684 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D4B415E024FA5AF600086684 /* CurrencyModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		F5B0D1F0692F7E986DBCE23F /* Frameworks */ = {
@@ -342,6 +364,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4B415DC24FA553C00086684 /* HTTPClient.swift in Sources */,
+				D4B415E124FA5AF600086684 /* CurrencyModel.swift in Sources */,
 				D4B415D824FA4F1D00086684 /* CurrencyCell.swift in Sources */,
 				D47FE39F24FA266300BF4B91 /* ViewController.swift in Sources */,
 				D47FE39B24FA266300BF4B91 /* AppDelegate.swift in Sources */,
