@@ -22,7 +22,6 @@ class ViewController: UIViewController {
         EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
             
             DispatchQueue.main.async() {
-                print("results", results)
             }
         }
     }
