@@ -11,11 +11,20 @@ import DropDown
 
 class ViewController: UIViewController {
     @IBOutlet var currencyCollectionView: UICollectionView!
+    
+//    var models = CurrencyInfo()
+    
     override func viewDidLoad() {
+        super.viewDidLoad()
         currencyCollectionView.delegate = self
         currencyCollectionView.dataSource = self
         currencyCollectionView.register(UINib(nibName: "CurrencyCell", bundle: nil), forCellWithReuseIdentifier: "CurrencyCell")
-        super.viewDidLoad()
+        EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
+            
+            DispatchQueue.main.async() {
+                print("results", results)
+            }
+        }
     }
 
 
@@ -44,4 +53,16 @@ extension ViewController: UICollectionViewDelegateFlowLayout{
         let cellSize : CGFloat = self.view.bounds.width / 3 - horizontalSpace
         return CGSize(width: cellSize, height: cellSize)
     }
+}
+
+extension ViewController: EasyRequestDelegate {
+
+    func onError() {
+        DispatchQueue.main.async() {
+            let alert = UIAlertController(title: "Ups", message: "An error has occurred...", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }
+    }
+
 }
