@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  currency
+//  Currency
 //
 //  Created by 小牛 on 2020/08/29.
 //  Copyright © 2020 小牛. All rights reserved.
