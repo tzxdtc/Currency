@@ -12,18 +12,25 @@ import DropDown
 class ViewController: UIViewController {
     @IBOutlet var currencyCollectionView: UICollectionView!
     
-//    var models = CurrencyInfo()
+    var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         currencyCollectionView.delegate = self
         currencyCollectionView.dataSource = self
         currencyCollectionView.register(UINib(nibName: "CurrencyCell", bundle: nil), forCellWithReuseIdentifier: "CurrencyCell")
-        EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
-            
-            DispatchQueue.main.async() {
-            }
-        }
+//        EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
+//
+//            DispatchQueue.main.async() {
+//            }
+//        }
+        
+        // call every 30 mins
+        timer = Timer.scheduledTimer(timeInterval: 1800, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        timer?.invalidate()
     }
 
 
@@ -32,6 +39,10 @@ class ViewController: UIViewController {
         let dropDown = DropDown()
         dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
         dropDown.show()
+    }
+    
+    @objc func runTimedCode(){
+        print("hello world")
     }
 }
 
