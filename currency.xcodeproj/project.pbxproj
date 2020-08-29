@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,6 +16,8 @@
 		D47FE3A724FA266400BF4B91 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D47FE3A524FA266400BF4B91 /* LaunchScreen.storyboard */; };
 		D47FE3B224FA266500BF4B91 /* CurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47FE3B124FA266500BF4B91 /* CurrencyTests.swift */; };
 		D47FE3BD24FA266500BF4B91 /* CurrencyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47FE3BC24FA266500BF4B91 /* CurrencyUITests.swift */; };
+		D4B415D824FA4F1D00086684 /* CurrencyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B415D624FA4F1D00086684 /* CurrencyCell.swift */; };
+		D4B415D924FA4F1D00086684 /* CurrencyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4B415D724FA4F1D00086684 /* CurrencyCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		D47FE3B824FA266500BF4B91 /* CurrencyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CurrencyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D47FE3BC24FA266500BF4B91 /* CurrencyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyUITests.swift; sourceTree = "<group>"; };
 		D47FE3BE24FA266500BF4B91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D4B415D624FA4F1D00086684 /* CurrencyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCell.swift; sourceTree = "<group>"; };
+		D4B415D724FA4F1D00086684 /* CurrencyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +91,6 @@
 				3890C8C0045EAE627CC9D987 /* Pods-Currency.debug.xcconfig */,
 				9A21C402134284A3A45D3317 /* Pods-Currency.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -116,6 +119,7 @@
 		D47FE39924FA266300BF4B91 /* Currency */ = {
 			isa = PBXGroup;
 			children = (
+				D47FE3CA24FA3DDF00BF4B91 /* View */,
 				D47FE39A24FA266300BF4B91 /* AppDelegate.swift */,
 				D47FE39C24FA266300BF4B91 /* SceneDelegate.swift */,
 				D47FE39E24FA266300BF4B91 /* ViewController.swift */,
@@ -143,6 +147,15 @@
 				D47FE3BE24FA266500BF4B91 /* Info.plist */,
 			);
 			path = CurrencyUITests;
+			sourceTree = "<group>";
+		};
+		D47FE3CA24FA3DDF00BF4B91 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D4B415D624FA4F1D00086684 /* CurrencyCell.swift */,
+				D4B415D724FA4F1D00086684 /* CurrencyCell.xib */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		F5B0D1F0692F7E986DBCE23F /* Frameworks */ = {
@@ -259,6 +272,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4B415D924FA4F1D00086684 /* CurrencyCell.xib in Resources */,
 				D47FE3A724FA266400BF4B91 /* LaunchScreen.storyboard in Resources */,
 				D47FE3A424FA266400BF4B91 /* Assets.xcassets in Resources */,
 				D47FE3A224FA266300BF4B91 /* Main.storyboard in Resources */,
@@ -328,6 +342,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4B415D824FA4F1D00086684 /* CurrencyCell.swift in Sources */,
 				D47FE39F24FA266300BF4B91 /* ViewController.swift in Sources */,
 				D47FE39B24FA266300BF4B91 /* AppDelegate.swift in Sources */,
 				D47FE39D24FA266300BF4B91 /* SceneDelegate.swift in Sources */,
