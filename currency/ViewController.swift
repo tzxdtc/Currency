@@ -7,14 +7,41 @@
 //
 
 import UIKit
+import DropDown
 
 class ViewController: UIViewController {
-
+    @IBOutlet var currencyCollectionView: UICollectionView!
     override func viewDidLoad() {
+        currencyCollectionView.delegate = self
+        currencyCollectionView.dataSource = self
+        currencyCollectionView.register(UINib(nibName: "CurrencyCell", bundle: nil), forCellWithReuseIdentifier: "CurrencyCell")
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
 
 
+    @IBAction func click(_ sender: Any) {
+        
+        let dropDown = DropDown()
+        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+        dropDown.show()
+    }
 }
 
+extension ViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 20
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurrencyCell", for: indexPath) as! CurrencyCell
+        return cell
+    }
+}
+
+extension ViewController: UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let horizontalSpace : CGFloat = 10
+        let cellSize : CGFloat = self.view.bounds.width / 3 - horizontalSpace
+        return CGSize(width: cellSize, height: cellSize)
+    }
+}
