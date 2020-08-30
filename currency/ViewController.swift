@@ -86,11 +86,15 @@ class ViewController: UIViewController {
                 self.currencyValues = Array(dict.values)
             }
         }
-        self.currencyCollectionView.reloadData()
+        self.currencyCollectionView?.reloadData()
     }
     
     @objc func runTimedCode(){
         fetchData()
+    }
+    
+    func calculateCurrency(inputMoney: String, selfCurrencyValue: Float, objectCurrencyValue: [Float], indexPathRow: Int) -> String{
+        return String(describing: (inputMoney as NSString).floatValue / selfCurrencyValue * objectCurrencyValue[indexPathRow])
     }
 }
 
@@ -105,7 +109,8 @@ extension ViewController: UICollectionViewDataSource {
             cell.currencyName.text = currencyKeys[indexPath.row]
         }
         if let currencyValues = self.currencyValues as? [Float],let inputMoney = self.inputNumberMoney,let currencyDict = self.currencyDict,let currencyValue = currencyDict["\(String(describing: Constants.usd + self.selectedCurrency))"] as? Float{
-            cell.currencyConvert.text = String(describing: (inputMoney as NSString).floatValue / currencyValue * currencyValues[indexPath.row])
+            
+            cell.currencyConvert.text = calculateCurrency(inputMoney: inputMoney, selfCurrencyValue: currencyValue, objectCurrencyValue: currencyValues, indexPathRow: indexPath.row)
         }else{
             cell.currencyConvert.text = "0"
         }

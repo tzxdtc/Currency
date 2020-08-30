@@ -10,25 +10,20 @@ import XCTest
 @testable import Currency
 
 class CurrencyTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    func testCalculateCurrency() throws {
+        let inputMoney = "100"
+        let selfCurrencyValue = 10.0 as Float
+        let objectCurrencyValue = [5.0,5.0] as [Float]
+        let indexPathRow = 1
+        let viewController = ViewController()
+        XCTAssertEqual(viewController.calculateCurrency(inputMoney: inputMoney, selfCurrencyValue: selfCurrencyValue, objectCurrencyValue: objectCurrencyValue, indexPathRow: indexPathRow), "50.0")
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    func testFetchData() throws{
+        let viewController = ViewController()
+        EasyRequest<CurrencyInfo>.get(viewController, url: "\(Constants.API.url)?access_key=\(Constants.API.accessKey)") { (results) in
+            XCTAssertNotNil(results.quotes)
         }
     }
-
 }

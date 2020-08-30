@@ -17,6 +17,7 @@
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4fU-YX-nLD">
                                 <rect key="frame" x="5" y="49" width="404" height="80"/>
+                                <accessibility key="accessibilityConfiguration" identifier="inputMoney"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="s4r-SP-vqS"/>
                                 </constraints>

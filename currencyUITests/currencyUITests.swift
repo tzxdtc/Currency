@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import Currency
 
 class CurrencyUITests: XCTestCase {
 
@@ -27,9 +28,18 @@ class CurrencyUITests: XCTestCase {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        sleep(2)
+        let textField = app.textFields["inputMoney"]
+        if textField.exists {
+            textField.tap()
+            textField.typeText("100")
+        }
+//        sleep(20)
+        let labels = app.staticTexts.matching(identifier: "myLabel")
+        print("labels.count",labels.count)
+        if labels.count > 0{
+            print("hhhhhhhh",labels.element(boundBy: 1).value)
+        }
     }
 
     func testLaunchPerformance() throws {
