@@ -17,4 +17,8 @@ class CurrencyCell: UICollectionViewCell {
         // Initialization code
     }
     
+    override func layoutSubviews() {
+        self.layoutIfNeeded()
+    }
+    
 }

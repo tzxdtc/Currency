@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     var currencyValues: [Any]?
     var currencyDict: [String:Any]?
     var inputNumberMoney: String?
-    var selectedCurrency = "USDUSD"
+    var selectedCurrency = "USD"
     override func viewDidLoad() {
         super.viewDidLoad()
         currencyCollectionView.delegate = self
@@ -35,14 +35,27 @@ class ViewController: UIViewController {
             self.currencyDetail = results.quotes
             if let dict = self.currencyDetail?.asDictionary{
                 self.currencyDict = dict
-                self.currencyKeys = Array(dict.keys)
+                self.currencyKeys = Array(dict.keys).map{
+                    String($0.dropFirst(3))
+                }
                 self.currencyValues = Array(dict.values)
             }
         }
+        
+        //Looks for single or multiple taps.
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        
+        view.addGestureRecognizer(tap)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         timer?.invalidate()
+    }
+    
+    //Calls this function when the tap is recognized.
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
 
 
@@ -53,13 +66,9 @@ class ViewController: UIViewController {
         }
         dropDown.anchorView = currencyCollectionView
         dropDown.selectionAction = {index, title in
-            self.inputNumber.text = "0"
             self.currencySelectBtn.setTitle(title, for: .normal)
             self.selectedCurrency = title
-            print("index \(index) title \(title)")
-            if let dict = self.currencyDetail?.asDictionary{
-                print("value \(dict["\(title)"] ?? "")")
-            }
+            self.currencyCollectionView.reloadData()
         }
         dropDown.show()
     }
@@ -105,7 +114,7 @@ extension ViewController: UICollectionViewDataSource {
         if let currencyKeys = self.currencyKeys{
             cell.currencyName.text = currencyKeys[indexPath.row]
         }
-        if let currencyValues = self.currencyValues as? [Float],let inputMoney = self.inputNumberMoney,let currencyDict = self.currencyDict,let currencyValue = currencyDict["\(String(describing: self.selectedCurrency))"] as? Float{
+        if let currencyValues = self.currencyValues as? [Float],let inputMoney = self.inputNumberMoney,let currencyDict = self.currencyDict,let currencyValue = currencyDict["\(String(describing: "USD" + self.selectedCurrency))"] as? Float{
             cell.currencyConvert.text = String(describing: (inputMoney as NSString).floatValue / currencyValue * currencyValues[indexPath.row])
         }else{
             cell.currencyConvert.text = "0"
