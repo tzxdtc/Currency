@@ -12,12 +12,15 @@ import DropDown
 class ViewController: UIViewController {
     @IBOutlet var currencyCollectionView: UICollectionView!
     @IBOutlet weak var inputNumber: UITextField!
+    @IBOutlet weak var currencySelectBtn: UIButton!
     
     var timer: Timer?
     var currencyDetail: CurrencyDetailModel?
     var currencyKeys: [String]?
     var currencyValues: [Any]?
+    var currencyDict: [String:Any]?
     var inputNumberMoney: String?
+    var selectedCurrency = "USDUSD"
     override func viewDidLoad() {
         super.viewDidLoad()
         currencyCollectionView.delegate = self
@@ -31,11 +34,11 @@ class ViewController: UIViewController {
         EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
             self.currencyDetail = results.quotes
             if let dict = self.currencyDetail?.asDictionary{
+                self.currencyDict = dict
                 self.currencyKeys = Array(dict.keys)
                 self.currencyValues = Array(dict.values)
             }
         }
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -44,9 +47,20 @@ class ViewController: UIViewController {
 
 
     @IBAction func click(_ sender: Any) {
-        
         let dropDown = DropDown()
-        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+        if let currencyKeys = self.currencyKeys{
+            dropDown.dataSource = currencyKeys
+        }
+        dropDown.anchorView = currencyCollectionView
+        dropDown.selectionAction = {index, title in
+            self.inputNumber.text = "0"
+            self.currencySelectBtn.setTitle(title, for: .normal)
+            self.selectedCurrency = title
+            print("index \(index) title \(title)")
+            if let dict = self.currencyDetail?.asDictionary{
+                print("value \(dict["\(title)"] ?? "")")
+            }
+        }
         dropDown.show()
     }
     
@@ -58,20 +72,23 @@ class ViewController: UIViewController {
         
     }
     
-    
     @objc func runTimedCode(){
         EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
 
             let encoder = JSONEncoder()
             let defaults = UserDefaults.standard
             if let encoded = try? encoder.encode(results) {
-                defaults.set(encoded, forKey: "SavedPerson")
+                defaults.set(encoded, forKey: "currencyInfo")
             }
             
-            if let savedPerson = defaults.object(forKey: "SavedPerson") as? Data {
+            if let currencyInfo = defaults.object(forKey: "currencyInfo") as? Data {
                 let decoder = JSONDecoder()
-                if let loadedPerson = try? decoder.decode(CurrencyInfo.self, from: savedPerson) {
-                    print(loadedPerson.quotes.USDAED)
+                if let loadedCurrencyInfo = try? decoder.decode(CurrencyInfo.self, from: currencyInfo) {
+                    self.currencyDetail = loadedCurrencyInfo.quotes
+                     if let dict = self.currencyDetail?.asDictionary{
+                         self.currencyKeys = Array(dict.keys)
+                         self.currencyValues = Array(dict.values)
+                     }
                 }
             }
         }
@@ -88,8 +105,8 @@ extension ViewController: UICollectionViewDataSource {
         if let currencyKeys = self.currencyKeys{
             cell.currencyName.text = currencyKeys[indexPath.row]
         }
-        if let currencyValues = self.currencyValues as? [Float],let inputMoney = self.inputNumberMoney{
-            cell.currencyConvert.text = String(describing: (inputMoney as NSString).floatValue * currencyValues[indexPath.row])
+        if let currencyValues = self.currencyValues as? [Float],let inputMoney = self.inputNumberMoney,let currencyDict = self.currencyDict,let currencyValue = currencyDict["\(String(describing: self.selectedCurrency))"] as? Float{
+            cell.currencyConvert.text = String(describing: (inputMoney as NSString).floatValue / currencyValue * currencyValues[indexPath.row])
         }else{
             cell.currencyConvert.text = "0"
         }
