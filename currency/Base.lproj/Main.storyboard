@@ -63,7 +63,7 @@
                     <connections>
                         <outlet property="currencyCollectionView" destination="AZg-Ae-KzH" id="vSQ-Cj-Wnr"/>
                         <outlet property="currencySelectBtn" destination="r2c-pl-3G5" id="kJW-3b-2kS"/>
-                        <outlet property="inputNumber" destination="4fU-YX-nLD" id="Lxh-oI-0xg"/>
+                        <outlet property="inputNumberTextField" destination="4fU-YX-nLD" id="Lxh-oI-0xg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

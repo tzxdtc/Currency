@@ -11,7 +11,7 @@ import DropDown
 
 class ViewController: UIViewController {
     @IBOutlet var currencyCollectionView: UICollectionView!
-    @IBOutlet weak var inputNumber: UITextField!
+    @IBOutlet weak var inputNumberTextField: UITextField!
     @IBOutlet weak var currencySelectBtn: UIButton!
     
     var timer: Timer?
@@ -20,41 +20,34 @@ class ViewController: UIViewController {
     var currencyValues: [Any]?
     var currencyDict: [String:Any]?
     var inputNumberMoney: String?
-    var selectedCurrency = "USD"
+    var selectedCurrency = Constants.usd
     override func viewDidLoad() {
         super.viewDidLoad()
         currencyCollectionView.delegate = self
         currencyCollectionView.dataSource = self
-        currencyCollectionView.register(UINib(nibName: "CurrencyCell", bundle: nil), forCellWithReuseIdentifier: "CurrencyCell")
+        currencyCollectionView.register(UINib(nibName: Constants.Cell.cellNibName, bundle: nil), forCellWithReuseIdentifier: Constants.Cell.cellIdentifier)
         
-        inputNumber.addTarget(self, action: #selector(ViewController.textFieldDidChange(_:)), for: .editingChanged)
+        //observe inputNumberTextField change
+        inputNumberTextField.addTarget(self, action: #selector(ViewController.textFieldDidChange(_:)), for: .editingChanged)
+        
+        fetchData()
+        
         // call every 30 mins
-//        timer = Timer.scheduledTimer(timeInterval: 1800, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
-        
-        EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
-            self.currencyDetail = results.quotes
-            if let dict = self.currencyDetail?.asDictionary{
-                self.currencyDict = dict
-                self.currencyKeys = Array(dict.keys).map{
-                    String($0.dropFirst(3))
-                }
-                self.currencyValues = Array(dict.values)
-            }
-        }
-        
+        timer = Timer.scheduledTimer(timeInterval: TimeInterval(Constants.timer), target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
+
         //Looks for single or multiple taps.
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         
         view.addGestureRecognizer(tap)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        //stop timer when view disappear
         timer?.invalidate()
     }
     
     //Calls this function when the tap is recognized.
     @objc func dismissKeyboard() {
-        //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
 
@@ -81,26 +74,23 @@ class ViewController: UIViewController {
         
     }
     
-    @objc func runTimedCode(){
-        EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
-
-            let encoder = JSONEncoder()
-            let defaults = UserDefaults.standard
-            if let encoded = try? encoder.encode(results) {
-                defaults.set(encoded, forKey: "currencyInfo")
-            }
-            
-            if let currencyInfo = defaults.object(forKey: "currencyInfo") as? Data {
-                let decoder = JSONDecoder()
-                if let loadedCurrencyInfo = try? decoder.decode(CurrencyInfo.self, from: currencyInfo) {
-                    self.currencyDetail = loadedCurrencyInfo.quotes
-                     if let dict = self.currencyDetail?.asDictionary{
-                         self.currencyKeys = Array(dict.keys)
-                         self.currencyValues = Array(dict.values)
-                     }
+    func fetchData(){
+        EasyRequest<CurrencyInfo>.get(self, url: "\(Constants.API.url)?access_key=\(Constants.API.accessKey)") { (results) in
+            self.currencyDetail = results.quotes
+            if let dict = self.currencyDetail?.asDictionary{
+                self.currencyDict = dict
+                // get rid of USD
+                self.currencyKeys = Array(dict.keys).map{
+                    String($0.dropFirst(3))
                 }
+                self.currencyValues = Array(dict.values)
             }
         }
+        self.currencyCollectionView.reloadData()
+    }
+    
+    @objc func runTimedCode(){
+        fetchData()
     }
 }
 
@@ -110,11 +100,11 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurrencyCell", for: indexPath) as! CurrencyCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.Cell.cellIdentifier, for: indexPath) as! CurrencyCell
         if let currencyKeys = self.currencyKeys{
             cell.currencyName.text = currencyKeys[indexPath.row]
         }
-        if let currencyValues = self.currencyValues as? [Float],let inputMoney = self.inputNumberMoney,let currencyDict = self.currencyDict,let currencyValue = currencyDict["\(String(describing: "USD" + self.selectedCurrency))"] as? Float{
+        if let currencyValues = self.currencyValues as? [Float],let inputMoney = self.inputNumberMoney,let currencyDict = self.currencyDict,let currencyValue = currencyDict["\(String(describing: Constants.usd + self.selectedCurrency))"] as? Float{
             cell.currencyConvert.text = String(describing: (inputMoney as NSString).floatValue / currencyValue * currencyValues[indexPath.row])
         }else{
             cell.currencyConvert.text = "0"
@@ -125,20 +115,18 @@ extension ViewController: UICollectionViewDataSource {
 
 extension ViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let horizontalSpace : CGFloat = 10
+        let horizontalSpace : CGFloat = CGFloat(Constants.Cell.space)
         let cellSize : CGFloat = self.view.bounds.width / 3 - horizontalSpace
         return CGSize(width: cellSize, height: cellSize)
     }
 }
 
 extension ViewController: EasyRequestDelegate {
-
     func onError() {
         DispatchQueue.main.async() {
-            let alert = UIAlertController(title: "Ups", message: "An error has occurred...", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            let alert = UIAlertController(title: Constants.ErrorMessage.title, message: Constants.ErrorMessage.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: Constants.ErrorMessage.actionTitle, style: .default, handler: nil))
             self.present(alert, animated: true)
         }
     }
-
 }
