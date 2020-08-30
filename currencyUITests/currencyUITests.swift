@@ -14,13 +14,11 @@ class CurrencyUITests: XCTestCase {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
-        sleep(2)
         let textField = app.textFields["inputMoney"]
         if textField.exists {
             textField.tap()
             textField.typeText("1")
         }
-        sleep(2)
         let labels = app.staticTexts.matching(identifier: "myLabel")
         if labels.count > 0{
             XCTAssertNotEqual(labels.element(boundBy: 0).label,"0")
