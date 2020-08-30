@@ -11,32 +11,30 @@ import DropDown
 
 class ViewController: UIViewController {
     @IBOutlet var currencyCollectionView: UICollectionView!
+    @IBOutlet weak var inputNumber: UITextField!
     
     var timer: Timer?
-    
+    var currencyDetail: CurrencyDetailModel?
+    var currencyKeys: [String]?
+    var currencyValues: [Any]?
+    var inputNumberMoney: String?
     override func viewDidLoad() {
         super.viewDidLoad()
         currencyCollectionView.delegate = self
         currencyCollectionView.dataSource = self
         currencyCollectionView.register(UINib(nibName: "CurrencyCell", bundle: nil), forCellWithReuseIdentifier: "CurrencyCell")
+        
+        inputNumber.addTarget(self, action: #selector(ViewController.textFieldDidChange(_:)), for: .editingChanged)
+        // call every 30 mins
+//        timer = Timer.scheduledTimer(timeInterval: 1800, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
+        
         EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
-
-            let encoder = JSONEncoder()
-            let defaults = UserDefaults.standard
-            if let encoded = try? encoder.encode(results) {
-                defaults.set(encoded, forKey: "SavedPerson")
-            }
-            
-            if let savedPerson = defaults.object(forKey: "SavedPerson") as? Data {
-                let decoder = JSONDecoder()
-                if let loadedPerson = try? decoder.decode(CurrencyInfo.self, from: savedPerson) {
-                    print(loadedPerson.quotes.USDAED)
-                }
+            self.currencyDetail = results.quotes
+            if let dict = self.currencyDetail?.asDictionary{
+                self.currencyKeys = Array(dict.keys)
+                self.currencyValues = Array(dict.values)
             }
         }
-        
-        // call every 30 mins
-        timer = Timer.scheduledTimer(timeInterval: 1800, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         
     }
     
@@ -52,18 +50,49 @@ class ViewController: UIViewController {
         dropDown.show()
     }
     
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if let myString = textField.text{
+            self.inputNumberMoney = myString
+            self.currencyCollectionView.reloadData()
+        }
+        
+    }
+    
+    
     @objc func runTimedCode(){
-        print("hello world")
+        EasyRequest<CurrencyInfo>.get(self, url: "http://apilayer.net/api/live?access_key=a9cafb950f5142c3b84aa9473626dc2c") { (results) in
+
+            let encoder = JSONEncoder()
+            let defaults = UserDefaults.standard
+            if let encoded = try? encoder.encode(results) {
+                defaults.set(encoded, forKey: "SavedPerson")
+            }
+            
+            if let savedPerson = defaults.object(forKey: "SavedPerson") as? Data {
+                let decoder = JSONDecoder()
+                if let loadedPerson = try? decoder.decode(CurrencyInfo.self, from: savedPerson) {
+                    print(loadedPerson.quotes.USDAED)
+                }
+            }
+        }
     }
 }
 
 extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return self.currencyDetail?.asDictionary.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurrencyCell", for: indexPath) as! CurrencyCell
+        if let currencyKeys = self.currencyKeys{
+            cell.currencyName.text = currencyKeys[indexPath.row]
+        }
+        if let currencyValues = self.currencyValues as? [Float],let inputMoney = self.inputNumberMoney{
+            cell.currencyConvert.text = String(describing: (inputMoney as NSString).floatValue * currencyValues[indexPath.row])
+        }else{
+            cell.currencyConvert.text = "0"
+        }
         return cell
     }
 }

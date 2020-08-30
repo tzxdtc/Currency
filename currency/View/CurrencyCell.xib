@@ -15,10 +15,38 @@
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="225" height="216"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ov-D3-Rah">
+                        <rect key="frame" x="0.0" y="0.0" width="225" height="43"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SaC-u5-G4X">
+                        <rect key="frame" x="0.0" y="43" width="225" height="173"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
             </view>
             <color key="backgroundColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="0Ov-D3-Rah" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="6nr-Z7-w0c"/>
+                <constraint firstItem="0Ov-D3-Rah" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" multiplier="0.2" id="H0M-He-Kxy"/>
+                <constraint firstAttribute="bottom" secondItem="SaC-u5-G4X" secondAttribute="bottom" id="TA2-Ha-MPy"/>
+                <constraint firstItem="SaC-u5-G4X" firstAttribute="top" secondItem="0Ov-D3-Rah" secondAttribute="bottom" id="hNZ-0Z-AT2"/>
+                <constraint firstItem="0Ov-D3-Rah" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="m6v-bq-o4j"/>
+                <constraint firstItem="SaC-u5-G4X" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="qdw-YY-HjQ"/>
+                <constraint firstAttribute="trailing" secondItem="SaC-u5-G4X" secondAttribute="trailing" id="qul-mu-eiT"/>
+                <constraint firstAttribute="trailing" secondItem="0Ov-D3-Rah" secondAttribute="trailing" id="t5h-HT-OZp"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="225" height="216"/>
+            <connections>
+                <outlet property="currencyConvert" destination="SaC-u5-G4X" id="1e7-M3-nzf"/>
+                <outlet property="currencyName" destination="0Ov-D3-Rah" id="R2K-Ki-ddl"/>
+            </connections>
             <point key="canvasLocation" x="264.49275362318843" y="181.47321428571428"/>
         </collectionViewCell>
     </objects>

@@ -10,9 +10,11 @@ import UIKit
 
 class CurrencyCell: UICollectionViewCell {
 
+    @IBOutlet weak var currencyName: UILabel!
+    @IBOutlet weak var currencyConvert: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
 }
