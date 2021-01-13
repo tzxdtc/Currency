@@ -7,7 +7,7 @@ It is App that can convert rate include about 160 currencys.You can click the mi
 ![alt-text](https://github.com/tzxdtc/Currency/blob/master/appGIF.gif)
 
 ## Launch at local
-get into `/Currency`
+go to `/Currency`
 
 `pod install`
 
